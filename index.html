@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, height=device-height" />
   <title>whaTok - WhatsApp Clone</title>
   
   <!-- PWA Meta Tags -->
@@ -120,8 +120,9 @@
     .app-container {
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      height: -webkit-fill-available;
+      height: 100%;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
       width: 100%;
       max-width: 100%;
       margin: 0;
@@ -129,13 +130,7 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
-    }
-    
-    /* Fix for mobile browsers */
-    @supports (-webkit-touch-callout: none) {
-      .app-container {
-        height: -webkit-fill-available;
-      }
+      padding-bottom: 60px; /* Height of bottom nav */
     }
     header.app-header {
       background: var(--header-bg);
@@ -161,9 +156,9 @@
       flex: 1;
       overflow: hidden;
       width: 100%;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 110px);
+      max-height: calc(100vh - 110px);
       position: relative;
-      padding-bottom: 56px;
     }
     .tab {
       display: none;
@@ -853,6 +848,7 @@
     .bottom-nav {
       display: flex;
       justify-content: space-around;
+      align-items: center;
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
@@ -862,7 +858,12 @@
       right: 0;
       z-index: 1000;
       width: 100%;
-      min-height: 56px;
+      height: 60px;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+    }
+    
+    body {
+      padding-bottom: env(safe-area-inset-bottom);
     }
     .nav-item {
       display: flex;
