@@ -112,25 +112,32 @@
     body {
       background: var(--bg);
       color: var(--text);
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      margin: 0;
+      padding: 0;
+      padding-bottom: env(safe-area-inset-bottom);
+      overflow-x: hidden;
+      overflow-y: auto;
       display: flex;
       justify-content: center;
+      position: relative;
     }
     .app-container {
       display: flex;
       flex-direction: column;
-      height: 100%;
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
       width: 100%;
       max-width: 100%;
+      height: auto;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
       margin: 0;
+      padding: 0;
       background: var(--bg);
       position: relative;
       border-radius: 0;
-      overflow: hidden;
-      padding-bottom: 60px; /* Height of bottom nav */
+      padding-bottom: calc(60px + env(safe-area-inset-bottom));
+      overscroll-behavior-y: none;
     }
     header.app-header {
       background: var(--header-bg);
@@ -154,23 +161,26 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      overflow: hidden;
       width: 100%;
-      height: calc(100vh - 110px);
-      max-height: calc(100vh - 110px);
+      height: auto;
+      min-height: calc(100vh - 120px);
       position: relative;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(60px + env(safe-area-inset-bottom));
+      overscroll-behavior-y: contain;
     }
     .tab {
       display: none;
       flex-direction: column;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 60px);
       overflow: hidden;
       position: absolute;
       left: 0;
       top: 0;
       right: 0;
-      bottom: 0;
+      bottom: 60px;
     }
     .tab.active {
       display: flex;
@@ -846,7 +856,7 @@
     }
     /* =============== BOTTOM NAV =============== */
     .bottom-nav {
-      display: flex;
+      display: flex !important;
       justify-content: space-around;
       align-items: center;
       background: var(--bg);
@@ -856,10 +866,31 @@
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 1000;
+      z-index: 99999;
       width: 100%;
       height: 60px;
-      box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+      visibility: visible !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      user-select: none;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      height: 100%;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
     
     body {
@@ -1334,7 +1365,6 @@
     function openChat(name) {
       document.getElementById('chats-tab').classList.remove('active');
       chatScreen.style.display = 'flex';
-      document.querySelector('.bottom-nav').style.display = 'none';
       document.getElementById('chat-screen-name').textContent = name;
       chatMessages.innerHTML = '';
       const messages = sampleMessages[name] || [];
@@ -1732,6 +1762,21 @@
         themeMenu.classList.remove('active');
       }
     });
+
+    // Ensure bottom navigation is always visible
+    function ensureBottomNavVisibility() {
+      const bottomNav = document.querySelector('.bottom-nav');
+      if (bottomNav) {
+        bottomNav.style.display = 'flex';
+        bottomNav.style.visibility = 'visible';
+        bottomNav.style.opacity = '1';
+      }
+    }
+    
+    // Call this periodically and after any major UI changes
+    setInterval(ensureBottomNavVisibility, 1000);
+    document.addEventListener('DOMContentLoaded', ensureBottomNavVisibility);
+    window.addEventListener('resize', ensureBottomNavVisibility);
 
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
