@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, height=device-height" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>whaTok - WhatsApp Clone</title>
   
   <!-- PWA Meta Tags -->
@@ -112,32 +112,22 @@
     body {
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      margin: 0;
-      padding: 0;
-      padding-bottom: env(safe-area-inset-bottom);
-      overflow-x: hidden;
-      overflow-y: auto;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
-      position: relative;
     }
     .app-container {
       display: flex;
       flex-direction: column;
+      height: 100vh;
       width: 100%;
       max-width: 100%;
-      height: auto;
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
       margin: 0;
-      padding: 0;
       background: var(--bg);
       position: relative;
       border-radius: 0;
-      padding-bottom: calc(60px + env(safe-area-inset-bottom));
-      overscroll-behavior-y: none;
+      overflow: hidden;
     }
     header.app-header {
       background: var(--header-bg);
@@ -161,26 +151,22 @@
       display: flex;
       flex-direction: column;
       flex: 1;
+      overflow: hidden;
       width: 100%;
-      height: auto;
-      min-height: calc(100vh - 120px);
+      height: calc(100vh - 100px);
       position: relative;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: calc(60px + env(safe-area-inset-bottom));
-      overscroll-behavior-y: contain;
     }
     .tab {
       display: none;
       flex-direction: column;
       width: 100%;
-      height: calc(100% - 60px);
+      height: 100%;
       overflow: hidden;
       position: absolute;
       left: 0;
       top: 0;
       right: 0;
-      bottom: 60px;
+      bottom: 0;
     }
     .tab.active {
       display: flex;
@@ -856,45 +842,14 @@
     }
     /* =============== BOTTOM NAV =============== */
     .bottom-nav {
-      display: flex !important;
+      display: flex;
       justify-content: space-around;
-      align-items: center;
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
-      position: fixed;
+      position: sticky;
       bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 99999;
-      width: 100%;
-      height: 60px;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
-      visibility: visible !important;
-      opacity: 1 !important;
-      transform: none !important;
-      pointer-events: auto !important;
-      user-select: none;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    .nav-item {
-      flex: 1;
-      display: flex !important;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-width: 60px;
-      height: 100%;
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-    
-    body {
-      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 50;
     }
     .nav-item {
       display: flex;
@@ -1365,6 +1320,7 @@
     function openChat(name) {
       document.getElementById('chats-tab').classList.remove('active');
       chatScreen.style.display = 'flex';
+      document.querySelector('.bottom-nav').style.display = 'none';
       document.getElementById('chat-screen-name').textContent = name;
       chatMessages.innerHTML = '';
       const messages = sampleMessages[name] || [];
@@ -1763,21 +1719,6 @@
       }
     });
 
-    // Ensure bottom navigation is always visible
-    function ensureBottomNavVisibility() {
-      const bottomNav = document.querySelector('.bottom-nav');
-      if (bottomNav) {
-        bottomNav.style.display = 'flex';
-        bottomNav.style.visibility = 'visible';
-        bottomNav.style.opacity = '1';
-      }
-    }
-    
-    // Call this periodically and after any major UI changes
-    setInterval(ensureBottomNavVisibility, 1000);
-    document.addEventListener('DOMContentLoaded', ensureBottomNavVisibility);
-    window.addEventListener('resize', ensureBottomNavVisibility);
-
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       themeMenu.classList.toggle('active');
@@ -1815,7 +1756,7 @@
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
+        navigator.serviceWorker.register('/sw.js')
           .then(registration => {
             console.log('ServiceWorker registration successful');
           })
