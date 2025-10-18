@@ -7,9 +7,9 @@
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#128C7E">
   <meta name="description" content="WhatsApp Clone App">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="whaTok">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-title" content="whaTok">
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
   <!-- PWA Icons -->
@@ -124,7 +124,6 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
-      /* Ensure bottom nav is visible by padding the container */
       padding-bottom: calc(60px + env(safe-area-inset-bottom, 0));
       box-sizing: border-box;
     }
@@ -153,8 +152,7 @@
       overflow: hidden;
       padding-bottom: 0;
       width: 100%;
-      /* Use 100% - 60px to ensure the bottom nav is always visible */
-      height: calc(100% - 60px);
+      height: calc(100dvh - 60px - env(safe-area-inset-bottom, 0));
       position: relative;
     }
     .tab {
@@ -200,7 +198,7 @@
       color: var(--text);
       font-weight: 600;
       font-size: 15px;
-      overflow-x: auto;
+      overflow-x: auto; /* 👈 FIXED: Enable horizontal scrolling */
       white-space: nowrap;
       border-bottom: 1px solid var(--border);
     }
@@ -220,8 +218,6 @@
       flex: 1;
       overflow-y: auto;
       padding: 8px 0;
-      /* Add min-height to ensure bottom nav is visible even with few chats */
-      min-height: calc(100vh - 150px - env(safe-area-inset-bottom, 0)); /* Adjust 150px based on header/filter heights */
     }
     .chat-item {
       padding: 8px 16px;
@@ -391,6 +387,8 @@
       scroll-snap-type: y mandatory;
       background: var(--reel-bg);
       scrollbar-width: none;
+      /* Ensure video doesn't get cropped by bottom nav */
+      padding-bottom: 60px; /* 👈 FIXED: Add padding equal to bottom nav height */
     }
     .reels-feed::-webkit-scrollbar { display: none; }
     .reel-item {
@@ -851,8 +849,8 @@
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
-      position: fixed; /* Keep it fixed at the bottom */
-      bottom: 0; /* Always at the bottom */
+      position: fixed;
+      bottom: 0;
       left: 0;
       right: 0;
       width: 100%;
@@ -956,8 +954,7 @@
       }
       .tabs {
         padding-bottom: calc(60px + env(safe-area-inset-bottom, 0));
-        /* Use 100% - 60px for the tabs container */
-        height: calc(100% - 60px);
+        height: calc(100% - env(safe-area-inset-bottom, 0) - 60px);
       }
       .tab {
         height: 100%;
