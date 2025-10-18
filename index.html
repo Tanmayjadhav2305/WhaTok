@@ -4,21 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>whaTok - WhatsApp Clone</title>
-  
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#128C7E">
   <meta name="description" content="WhatsApp Clone App">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="whaTok">
-  
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
-  
   <!-- PWA Icons -->
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-  
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -128,8 +124,9 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
+      /* Ensure bottom nav is visible by padding the container */
       padding-bottom: calc(60px + env(safe-area-inset-bottom, 0));
-       box-sizing: border-box;
+      box-sizing: border-box;
     }
     header.app-header {
       background: var(--header-bg);
@@ -156,7 +153,8 @@
       overflow: hidden;
       padding-bottom: 0;
       width: 100%;
-      height: calc(100dvh - 60px - env(safe-area-inset-bottom, 0));
+      /* Use 100% - 60px to ensure the bottom nav is always visible */
+      height: calc(100% - 60px);
       position: relative;
     }
     .tab {
@@ -222,6 +220,8 @@
       flex: 1;
       overflow-y: auto;
       padding: 8px 0;
+      /* Add min-height to ensure bottom nav is visible even with few chats */
+      min-height: calc(100vh - 150px - env(safe-area-inset-bottom, 0)); /* Adjust 150px based on header/filter heights */
     }
     .chat-item {
       padding: 8px 16px;
@@ -851,8 +851,8 @@
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
-      position: fixed;
-      bottom: 0;
+      position: fixed; /* Keep it fixed at the bottom */
+      bottom: 0; /* Always at the bottom */
       left: 0;
       right: 0;
       width: 100%;
@@ -956,7 +956,8 @@
       }
       .tabs {
         padding-bottom: calc(60px + env(safe-area-inset-bottom, 0));
-        height: calc(100% - env(safe-area-inset-bottom, 0) - 60px);
+        /* Use 100% - 60px for the tabs container */
+        height: calc(100% - 60px);
       }
       .tab {
         height: 100%;
@@ -994,7 +995,6 @@
       </svg>
     </div>
   </div>
-
   <!-- MAIN APP -->
   <div id="app" class="app-container">
     <header class="app-header" id="header">
@@ -1119,7 +1119,6 @@
         </div>
       </div>
     </div>
-
     <!-- Chat Screen -->
     <div class="chat-screen" id="chat-screen">
       <div class="chat-screen-header">
@@ -1133,7 +1132,6 @@
         <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
-
     <!-- Status Viewer -->
     <div id="status-viewer">
       <div class="status-header">
@@ -1150,7 +1148,6 @@
         <button id="next-status"></button>
       </div>
     </div>
-
     <div class="bottom-nav">
       <div class="nav-item active" data-tab="chats-tab">
         <i class="fas fa-comment"></i>
@@ -1174,7 +1171,6 @@
       </div>
     </div>
   </div>
-
   <script>
     // Simulate WhatsApp loading (2s)
     window.addEventListener('load', () => {
@@ -1184,28 +1180,23 @@
         setTimeout(() => {
           document.getElementById('loading-screen').style.display = 'none';
           document.getElementById('app').style.display = 'flex';
-
           // Force chats tab to be active on load and hide other tabs
           document.querySelectorAll('.tab').forEach(tab => {
             tab.classList.remove('active');
             tab.style.display = 'none';
           });
           document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-          
           document.getElementById('chats-tab').classList.add('active');
           document.getElementById('chats-tab').style.display = 'flex';
           document.querySelector('.nav-item[data-tab="chats-tab"]').classList.add('active');
           document.getElementById('header').querySelector('span').textContent = 'Chats';
-
           initAnimations();
         }, 500);
       }, 2000);
     });
-
     function initAnimations() {
       gsap.fromTo('#app', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
     }
-
     // Data
     const reels = [
       { user: "TravelWithMe", caption: "Mountain sunrise in the Alps 🏔️✨ #nature", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
@@ -1215,7 +1206,6 @@
       { user: "TechGuru", caption: "How to build your first app 💻 #coding", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4" },
       { user: "FitnessPro", caption: "10-min full body workout! 💪 #fitness", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SampleVideo_1280x720_1mb.mp4" }
     ];
-
     const statusData = [
       { name: "You", image: null, time: "Now" },
       { name: "Alex", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&h=600", time: "Today, 10:00 AM" },
@@ -1226,7 +1216,6 @@
       { name: "John", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&h=600", time: "Yesterday" },
       { name: "Emma", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&h=600", time: "2 days ago" }
     ];
-
     const sampleMessages = {
       "Nagy Tímea": [{ text: "Typing...", sender: "received", time: "Today" }],
       "Gupta Family": [{ text: "~ Sudha: This is not going to e...", sender: "received", time: "yesterday" }],
@@ -1250,7 +1239,6 @@
       "Carlos Ruiz": [{ text: "Vamos al parque?", sender: "received", time: "Today" }],
       "Aisha Khan": [{ text: "Eid Mubarak! 🌙", sender: "received", time: "01/02/24" }]
     };
-
     let isDark = localStorage.getItem('whaTokDark') === 'true';
     let isAudioEnabled = localStorage.getItem('whaTokAudio') !== 'false';
     let chats = JSON.parse(localStorage.getItem('whaTokChats')) || [
@@ -1276,12 +1264,10 @@
       { name: "Carlos Ruiz", lastMsg: "Vamos al parque?", time: "Today", unread: 0, type: "person" },
       { name: "Aisha Khan", lastMsg: "Eid Mubarak! 🌙", time: "01/02/24", unread: 0, type: "person" }
     ];
-
     let likes = JSON.parse(localStorage.getItem('whaTokLikes')) || Array(reels.length).fill(0);
     let liked = JSON.parse(localStorage.getItem('whaTokLiked')) || Array(reels.length).fill(false);
     let currentStatusIndex = 0;
     let currentFilter = 'all';
-
     // Apply dark mode
     if (isDark) document.body.classList.add('dark-mode');
     const darkCheckbox = document.getElementById('dark-checkbox');
@@ -1293,12 +1279,10 @@
       darkCheckbox.checked = isDark;
     }
     darkCheckbox.addEventListener('change', toggleDarkMode);
-
     function updateMuteIcon() {
       const icon = muteGlobalBtn.querySelector('i');
       icon.className = isAudioEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
     }
-
     function toggleGlobalAudio() {
       isAudioEnabled = !isAudioEnabled;
       localStorage.setItem('whaTokAudio', isAudioEnabled);
@@ -1307,7 +1291,6 @@
         video.muted = !isAudioEnabled;
       });
     }
-
     // DOM Elements
     const chatList = document.getElementById('chat-list');
     const reelsFeed = document.getElementById('reels-feed');
@@ -1339,9 +1322,7 @@
     const themeMenu = document.getElementById('theme-menu');
     const themeLight = document.getElementById('theme-light');
     const themeDark = document.getElementById('theme-dark');
-
     muteGlobalBtn.addEventListener('click', toggleGlobalAudio);
-
     // Render Chats
     function renderChats() {
       chatList.innerHTML = '';
@@ -1375,7 +1356,6 @@
         chatList.appendChild(div);
       });
     }
-
     function openChat(name) {
       document.getElementById('chats-tab').classList.remove('active');
       chatScreen.style.display = 'flex';
@@ -1391,13 +1371,11 @@
       });
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
     backToChats.addEventListener('click', () => {
       chatScreen.style.display = 'none';
       document.getElementById('chats-tab').classList.add('active');
       // document.querySelector('.bottom-nav').style.display = 'flex';
     });
-
     function sendChatMessage() {
       const msg = chatMessageInput.value.trim();
       if (!msg) return;
@@ -1419,12 +1397,10 @@
         renderChats();
       }
     }
-
     chatSendBtn.addEventListener('click', sendChatMessage);
     chatMessageInput.addEventListener('keypress', e => {
       if (e.key === 'Enter') sendChatMessage();
     });
-
     // Render Status
     function renderStatus() {
       statusList.innerHTML = '';
@@ -1452,7 +1428,6 @@
         statusList.appendChild(item);
       });
     }
-
     function openStatus(index) {
       currentStatusIndex = index;
       const status = statusData[index];
@@ -1469,7 +1444,6 @@
       document.querySelector('.bottom-nav').style.display = 'none';
       gsap.fromTo(statusViewer, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 });
     }
-
     function closeStatusViewer() {
       gsap.to(statusViewer, { opacity: 0, y: 20, duration: 0.4, onComplete: () => {
         statusViewer.style.display = 'none';
@@ -1477,7 +1451,6 @@
         document.querySelector('.bottom-nav').style.display = 'flex';
       }});
     }
-
     closeStatus.addEventListener('click', closeStatusViewer);
     backFromStatus.addEventListener('click', closeStatusViewer);
     prevStatusBtn.addEventListener('click', () => {
@@ -1486,7 +1459,6 @@
     nextStatusBtn.addEventListener('click', () => {
       if (currentStatusIndex < statusData.length - 1) openStatus(currentStatusIndex + 1);
     });
-
     // Render Reels
     function renderReels() {
       reelsFeed.innerHTML = '';
@@ -1545,7 +1517,6 @@
         });
       });
     }
-
     // Tab switching
     navItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -1571,7 +1542,6 @@
         }
       });
     });
-
     // Filter tabs
     filterTabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -1581,16 +1551,13 @@
         renderChats();
       });
     });
-
     menuBtn.addEventListener('click', () => console.log('Menu'));
     searchBtn.addEventListener('click', () => console.log('Search'));
     moreBtn.addEventListener('click', () => console.log('More'));
-
     // Tic-Tac-Toe
     let currentPlayer = 'X';
     let gameBoard = Array(9).fill('');
     let gameActive = true;
-
     function checkWinner() {
       const winPatterns = [
         [0,1,2],[3,4,5],[6,7,8],
@@ -1605,7 +1572,6 @@
       }
       return gameBoard.includes('') ? null : 'Draw';
     }
-
     function updateGameStatus() {
       const winner = checkWinner();
       if (winner) {
@@ -1615,7 +1581,6 @@
         gameStatus.textContent = `Your turn: ${currentPlayer}`;
       }
     }
-
     function handleCellClick(e) {
       const cell = e.target;
       const index = parseInt(cell.dataset.index);
@@ -1626,7 +1591,6 @@
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
       updateGameStatus();
     }
-
     function resetGame() {
       gameBoard = Array(9).fill('');
       currentPlayer = 'X';
@@ -1637,10 +1601,8 @@
       });
       updateGameStatus();
     }
-
     ticTacToe.addEventListener('click', handleCellClick);
     resetBtn.addEventListener('click', resetGame);
-
     // Map functionality
     let map;
     let marker;
@@ -1650,34 +1612,28 @@
     const myLocationBtn = document.getElementById('my-location-btn');
     const mapOverlay = document.getElementById('map-overlay');
     const mapAddress = document.getElementById('map-address');
-
     function initMap() {
       map = L.map('map-container').setView([0, 0], 2);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
       }).addTo(map);
-
       const customIcon = L.divIcon({
         className: 'custom-marker',
         html: '<i class="fas fa-map-marker-alt"></i>',
         iconSize: [24, 24],
         iconAnchor: [12, 24]
       });
-
       map.on('click', function(e) {
         setMarker(e.latlng, customIcon);
         reverseGeocode(e.latlng);
       });
-
       locationSearch.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           searchLocation(this.value);
         }
       });
-
       myLocationBtn.addEventListener('click', getCurrentLocation);
     }
-
     function setMarker(latlng, customIcon) {
       if (marker) {
         map.removeLayer(marker);
@@ -1685,12 +1641,10 @@
       marker = L.marker(latlng, { icon: customIcon }).addTo(map);
       map.setView(latlng, 16);
     }
-
     function clearSearchMarkers() {
       searchMarkers.forEach(m => map.removeLayer(m));
       searchMarkers = [];
     }
-
     async function reverseGeocode(latlng) {
       try {
         mapAddress.textContent = 'Searching...';
@@ -1709,7 +1663,6 @@
         mapAddress.textContent = 'Could not find address';
       }
     }
-
     async function searchLocation(query) {
       if (!query.trim()) return;
       try {
@@ -1743,7 +1696,6 @@
         console.error('Search error:', error);
       }
     }
-
     function getCurrentLocation() {
       if ('geolocation' in navigator) {
         myLocationBtn.disabled = true;
@@ -1770,19 +1722,16 @@
         );
       }
     }
-
     // Theme Menu functionality
     document.addEventListener('click', (e) => {
       if (!themeMenu.contains(e.target) && !themeToggleBtn.contains(e.target)) {
         themeMenu.classList.remove('active');
       }
     });
-
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       themeMenu.classList.toggle('active');
     });
-
     themeLight.addEventListener('click', () => {
       isDark = false;
       document.body.classList.remove('dark-mode');
@@ -1790,7 +1739,6 @@
       darkCheckbox.checked = false;
       themeMenu.classList.remove('active');
     });
-
     themeDark.addEventListener('click', () => {
       isDark = true;
       document.body.classList.add('dark-mode');
@@ -1798,20 +1746,17 @@
       darkCheckbox.checked = true;
       themeMenu.classList.remove('active');
     });
-
     // Initialize everything
     updateMuteIcon();
     renderChats();
     renderStatus();
     renderReels();
     updateGameStatus();
-
     document.querySelector('[data-tab="maps-tab"]').addEventListener('click', function() {
       if (!map) {
         setTimeout(initMap, 100);
       }
     });
-
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
