@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>whaTok - WhatsApp Clone</title>
   
   <!-- PWA Meta Tags -->
@@ -128,6 +128,7 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
+      padding-bottom: 60px;
     }
     header.app-header {
       background: var(--header-bg);
@@ -842,24 +843,36 @@
     }
     /* =============== BOTTOM NAV =============== */
     .bottom-nav {
-      display: flex;
+      display: flex !important;
       justify-content: space-around;
+      align-items: center;
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
-      position: sticky;
+      position: fixed;
       bottom: 0;
-      z-index: 50;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 99999;
+      height: 60px;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     .nav-item {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       font-size: 11px;
       color: var(--text-secondary);
       cursor: pointer;
       padding: 4px 0;
       transition: color 0.2s;
+      flex: 1;
+      position: relative;
+      z-index: 99999;
     }
     .nav-item:hover {
         opacity: 0.8;
@@ -912,6 +925,40 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.4); }
       100% { transform: scale(1); }
+    }
+    @media screen and (max-width: 768px) {
+      .bottom-nav {
+        position: fixed !important;
+        bottom: 0 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        bottom: env(safe-area-inset-bottom) !important;
+      }
+      .app-container {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom)) !important;
+        height: calc(100vh - env(safe-area-inset-bottom)) !important;
+      }
+      body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tabs {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom));
+      }
+    }
+    /* iOS specific styles */
+    @supports (-webkit-touch-callout: none) {
+      .bottom-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(60px + env(safe-area-inset-bottom));
+      }
+      .app-container {
+        min-height: -webkit-fill-available;
+      }
     }
     .heart-animation {
       position: absolute;
