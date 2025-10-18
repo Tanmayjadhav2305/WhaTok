@@ -121,6 +121,7 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      height: -webkit-fill-available;
       width: 100%;
       max-width: 100%;
       margin: 0;
@@ -128,6 +129,13 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
+    }
+    
+    /* Fix for mobile browsers */
+    @supports (-webkit-touch-callout: none) {
+      .app-container {
+        height: -webkit-fill-available;
+      }
     }
     header.app-header {
       background: var(--header-bg);
@@ -153,8 +161,9 @@
       flex: 1;
       overflow: hidden;
       width: 100%;
-      height: calc(100vh - 100px);
+      height: calc(100vh - 120px);
       position: relative;
+      padding-bottom: 56px;
     }
     .tab {
       display: none;
@@ -847,9 +856,13 @@
       background: var(--bg);
       border-top: 1px solid var(--border);
       padding: 8px 0;
-      position: sticky;
+      position: fixed;
       bottom: 0;
-      z-index: 50;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      width: 100%;
+      min-height: 56px;
     }
     .nav-item {
       display: flex;
